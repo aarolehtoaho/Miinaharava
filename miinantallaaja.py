@@ -7,11 +7,7 @@ from random import randint
 from math import floor, ceil
 from datetime import datetime
 from numpy import full
-from haravasto import grafiikka, lataa_kuvat, luo_ikkuna, tyhjaa_ikkuna, \
-        piirra_tausta, piirra_tekstia, aloita_ruutujen_piirto, \
-        lisaa_piirrettava_ruutu, piirra_ruudut, aseta_piirto_kasittelija, \
-        aseta_hiiri_kasittelija, aloita, lopeta, aseta_toistuva_kasittelija, \
-        aseta_nappain_kasittelija, muuta_ikkunan_koko, HIIRI_VASEN, HIIRI_OIKEA
+from haravasto import *
 
 # Vakiot, jotka kuvaavat ruutujen mahdollisia tiloja:
 AVATTU_TYHJA, AVATTU_1, AVATTU_2, AVATTU_3, AVATTU_4 = 0, 1, 2, 3, 4
@@ -27,6 +23,7 @@ FONTTI = "Times New Roman"
 PUNAINEN = (255, 0, 0, 255)
 VIHREA = (0, 255, 0, 255)
 MUSTA = (0, 0, 0, 255)
+BACKSLASH = 65288
 
 #Käsittelijäfunktioiden tarvitsemat tiedot
 pelin_tiedot = {
@@ -172,9 +169,6 @@ def luo_ruudukko() -> None:
        vasta ensimmäisen avauksen jälkeen."""
     pelin_tiedot["ruudukko"] = full((int(pelin_tiedot["korkeus"]), \
                                      int(pelin_tiedot["leveys"])), SULJETTU_TYHJA, int)
-    #Sama ilman numpyä:
-    #pelin_tiedot["ruudukko"] = [[SULJETTU_TYHJA for i in range(int(pelin_tiedot["leveys"]))] \
-                                #for i in range(int(pelin_tiedot["korkeus"]))]
     sijoita_miinat(int(pelin_tiedot["miinat"]))
 
 def avaa_ruutu(x: int, y: int) -> None:
@@ -428,7 +422,7 @@ def hiiren_kasittely_pelissa(x: int, y: int, nappi: int):
 def nappain_kasittelija(symboli: int, muokkausnapit: int) -> None:
     """Tarvitaan vain pelin alkuvalikossa, jotta kirjoitettuja arvoja voidaan pyyhkiä"""
     # pylint: disable=unused-argument
-    if pelin_tiedot["pelin_tila"] == "valikko" and symboli == 65288:# 65288-> BACKSLASH
+    if pelin_tiedot["pelin_tila"] == "valikko" and symboli == BACKSLASH:
         kirjoitettava_arvo = pelin_tiedot["syotteen_tila"]
         pelin_tiedot[kirjoitettava_arvo] = pelin_tiedot[kirjoitettava_arvo][:-1]
 
