@@ -198,7 +198,6 @@ def avaa_tyhja_alue() -> None:
                 continue
             if pelin_tiedot["ruudukko"][y][x] in range(SULJETTU_1, SULJETTU_MIINA + 1):
                 avaa_ruutu(x, y)
-                continue
 
 def lisaa_viereiset_ruudut(x: int, y: int) -> None:
     """Lisää ruudun (x, y) ympäröivät ruudut listaan vaaka, pysty ja viistosuunnissa"""
@@ -219,7 +218,7 @@ def sijoita_miinat(miinat: int) -> None:
     for _ in range(miinat):
         kohde_x = randint(0, int(pelin_tiedot["leveys"]) - 1)
         kohde_y = randint(0, int(pelin_tiedot["korkeus"]) - 1)
-        if not pelin_tiedot["ruudukko"][kohde_y][kohde_x] == SULJETTU_TYHJA:
+        if pelin_tiedot["ruudukko"][kohde_y][kohde_x] != SULJETTU_TYHJA:
             kohde_x, kohde_y = etsi_tyhja_ruutu(kohde_x, kohde_y)
         pelin_tiedot["ruudukko"][kohde_y][kohde_x] = SULJETTU_MIINA
         pelin_tiedot["miina_lista"].append((kohde_x, kohde_y))
@@ -407,10 +406,9 @@ def hiiren_kasittely_pelissa(x: int, y: int, nappi: int):
     if nappi == HIIRI_VASEN:
         if pelin_tiedot["ensimmainen_avaus"]:
             kasittele_ensimmainen_avaus(x, y)
-        else:
-            if ruutu in range(SULJETTU_TYHJA, SULJETTU_MIINA + 1):
-                pelin_tiedot["vuoro"] += 1
-                avaa_ruutu(ruutu_x, ruutu_y)
+        elif ruutu in range(SULJETTU_TYHJA, SULJETTU_MIINA + 1):
+            pelin_tiedot["vuoro"] += 1
+            avaa_ruutu(ruutu_x, ruutu_y)
         tarkista_voitto()
 
     elif nappi == HIIRI_OIKEA and not pelin_tiedot["ensimmainen_avaus"]:
